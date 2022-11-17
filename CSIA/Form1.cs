@@ -1,14 +1,9 @@
 ﻿using ConvertApiDotNet;
 using ConvertApiDotNet.Exceptions;
+using CSIA.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,6 +11,7 @@ namespace CSIA
 {
     public partial class Form1 : Form
     {
+        string selectedfile = string.Empty;
 
         public Form1()
         {
@@ -24,7 +20,16 @@ namespace CSIA
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.CenterToScreen();
+            this.SetControls();
+        }
 
+        private void SetControls()
+        {
+            //Form
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
         }
 
         private void label3_Click(object sender, EventArgs e)
@@ -32,63 +37,86 @@ namespace CSIA
             
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void buttonDownload_Click(object sender, EventArgs e)
         {
             //test
             Button btn = sender as Button;
             btn.Text = "clicked!";
         }
 
-        private async Task convert_ClickAsync(object sender, EventArgs ee) //need to open file directory to store files to convert
-        {
-            //var convertApi = new ConvertApi("DkZglWGd1z8IKnJb");
-            //var convert = await convertApi.ConvertAsync("heic", "jpg", new ConvertApiFileParam("File", @"C:\path\to\my_file.heic"));
-            //await convert.SaveFilesAsync(@"C:\converted-files\");
-
-            try
-            {
-                var convertApi = new ConvertApi("DkZglWGd1z8IKnJb");
-                var conversionTask = await convertApi.ConvertAsync("heic", "jpg",
-                    new ConvertApiFileParam(@"c:\source\test.docx")
-                    );
-                var fileSaved = await conversionTask.Files.SaveFilesAsync(@"c:\");
-            }
-            //Catch exceptions from asynchronous methods
-            catch (ConvertApiException e)
-            {
-                //?
-            }
-
-            //test
-            Button btn = sender as Button;
-            btn.Text = "clicked!";
-        }
-
-        private void listBox1_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            //listBox1.Items.Add("Item");
-            // add items????
-        }
-
-        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void listBoxUpload_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             
-            
+        }
+
+        private void listBoxDownload_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonUpload_Click(object sender, EventArgs e)
+        {
+            this.OpenFileDialogWindow();
+
+            //DONT NEED THIS FOR NOW
+            //this.ImportData();
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             
+        }
+
+
+
+
+//*****************  CONVERTING PROCESS  **********************
+
+        private void buttonConvert_ClickAsync(object sender, EventArgs e)
+        {
+            //HERE: REACH INTO FILES THAT HAVE BEEN CONVERTED 
+
+            var result = this.PerformConvertAPIAsync();
+
+            //converting text
+            Button btn = sender as Button;
+            btn.Text = "Converting...";
+        }
+
+        private void OpenFileDialogWindow()
+        {
+            string dbasepath = CurrentPath.GetDbasePath();
+
+            OpenFileDialog openDialog = new OpenFileDialog();
+
+            //Set Title of OpenFileDialog
+            openDialog.Title = "Select A Text File";
+            //Set directory path
+            openDialog.InitialDirectory = dbasepath;
+
+            //Set the File Filter of OpenFileDialog                      THIS NEEDS TO FILTER FOR FOLDERS/IMAGES 
+            openDialog.Filter = "Text (*.txt)|*.txt" + "|" +
+                                "CSV (*.csv)|*.csv" + "|" +
+                                "All Files (*.*)|*.*";
+
+            //Get the OK press of the Dialog Box
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                //Get Selected File
+                selectedfile = openDialog.FileName;
+            }
+        }
+
+        private async Task PerformConvertAPIAsync()
+        {
+            var convertApi = new ConvertApi("DkZglWGd1z8IKnJb");
+            var convert = await convertApi.ConvertAsync("heic", "jpg", new ConvertApiFileParam("File", @"INSERT FILES THAT NEED TO BE CONVERTED HERE"));
+            await convert.SaveFilesAsync(@"C:\Users\Default\Downloads");
         }
     }
 }
