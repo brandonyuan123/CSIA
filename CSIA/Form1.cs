@@ -39,7 +39,7 @@ namespace CSIA
 
         private void buttonDownload_Click(object sender, EventArgs e)
         {
-            //test
+            // displays something when the button is clicked
             Button btn = sender as Button;
             btn.Text = "clicked!";
         }
@@ -99,17 +99,23 @@ namespace CSIA
             //Set directory path
             openDialog.InitialDirectory = dbasepath;
 
-            //Set the File Filter of OpenFileDialog                      THIS NEEDS TO FILTER FOR FOLDERS/IMAGES 
-            openDialog.Filter = "Text (*.txt)|*.txt" + "|" +
-                                "CSV (*.csv)|*.csv" + "|" +
-                                "All Files (*.*)|*.*";
+            //Set the File Filter of OpenFileDialog                         THIS NEEDS TO FILTER FOR FOLDERS/IMAGES 
+            openDialog.Filter = "All Files (*.*)|*.*";
+            openDialog.Multiselect = true;
 
             //Get the OK press of the Dialog Box
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
-                //Get Selected File
-                selectedfile = openDialog.FileName;
+                //Get Selected File(s)                                      this works for one: selectedfile = openDialog.FileName;
+                foreach (String file in openDialog.FileNames)
+                {
+
+                }
             }
+        }
+        private void ImportData()
+        {
+            
         }
 
         private async Task PerformConvertAPIAsync()
@@ -117,6 +123,16 @@ namespace CSIA
             var convertApi = new ConvertApi("DkZglWGd1z8IKnJb");
             var convert = await convertApi.ConvertAsync("heic", "jpg", new ConvertApiFileParam("File", @"INSERT FILES THAT NEED TO BE CONVERTED HERE"));
             await convert.SaveFilesAsync(@"C:\Users\Default\Downloads");
+        }
+
+        private void uploadClear_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void downloadClear_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
