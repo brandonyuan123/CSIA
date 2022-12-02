@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.UI;
@@ -81,10 +82,22 @@ namespace CSIA
             
         }
 
+        private void uploadClear_Click(object sender, EventArgs e)
+        {
+            //Clears files queued to be uploaded
+            listBox1.Items.Clear();
+        }
+
+        private void downloadClear_Click(object sender, EventArgs e)
+        {
+            //Clears files that are ready to be downloaded
+            listBox1.Items.Clear();
+        }
 
 
 
-//**************************  CONVERTING PROCESS  ********************************
+
+        //**************************  CONVERTING PROCESS  ********************************
 
         private void buttonConvert_ClickAsync(object sender, EventArgs e)
         {
@@ -92,7 +105,15 @@ namespace CSIA
 
             var result = this.PerformConvertAPIAsync();
 
+            //nothing to convert?
+            if (listBox1.Items.Count == 0)
+            {
+                //Errormsg.set("01");                   Need to figure out how to transfer error message to 2nd form - make a class maybe?
+                this.BtnOpenSecondForm_Click();
+            }
+
             //converting text
+
             Button btn = sender as Button;
             btn.Text = "Converting...";
         }
@@ -135,17 +156,6 @@ namespace CSIA
             await convert.SaveFilesAsync(@"C:\Users\Default\Downloads");
         }
 
-        private void uploadClear_Click(object sender, EventArgs e)
-        {
-            //Clears files queued to be uploaded
-            listBox1.Items.Clear();
-        }
-
-        private void downloadClear_Click(object sender, EventArgs e)
-        {
-            //Clears files that are ready to be downloaded
-            listBox1.Items.Clear();
-        }
 
         //****************************** ERROR MESSAGE ***********************************
 
@@ -153,6 +163,7 @@ namespace CSIA
 
         private void BtnOpenSecondForm_Click()    
         {
+
             //Create a thread to RUN a NEW application with the desired form
             Thread t = new Thread(new ThreadStart(ThreadFormTwo));
             t.Start();
