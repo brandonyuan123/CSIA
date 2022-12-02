@@ -1,11 +1,14 @@
 ﻿using ConvertApiDotNet;
 using ConvertApiDotNet.Exceptions;
 using CSIA.Models;
+using NuGet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Web.UI;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CSIA
 {
@@ -109,7 +112,8 @@ namespace CSIA
                 //Get Selected File(s)                                      this works for one: selectedfile = openDialog.FileName;
                 foreach (String file in openDialog.FileNames)
                 {
-
+                    selectedfile = openDialog.FileName;
+                    listBoxUpload_SelectedIndexChanged_1.Items.Add(selectedfile);
                 }
             }
         }
@@ -127,12 +131,14 @@ namespace CSIA
 
         private void uploadClear_Click(object sender, EventArgs e)
         {
-
+            //Clears the files 
         }
 
         private void downloadClear_Click(object sender, EventArgs e)
         {
 
         }
+
+        
     }
 }
