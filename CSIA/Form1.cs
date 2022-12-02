@@ -139,8 +139,7 @@ namespace CSIA
                 //Get Selected File(s)                                      
                 foreach (String file in openDialog.FileNames)
                 {
-                    selectedfile = openDialog.FileName;
-                    listBox1.Items.Add(selectedfile.Substring(selectedfile.LastIndexOf('\\') + 1));
+                    listBox1.Items.Add(file.Substring(file.LastIndexOf('\\') + 1));
                 }
             }
         }
