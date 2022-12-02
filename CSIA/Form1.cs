@@ -5,10 +5,11 @@ using NuGet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.UI;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CSIA
 {
@@ -44,7 +45,12 @@ namespace CSIA
         {
             // displays something when the button is clicked
             Button btn = sender as Button;
-            btn.Text = "clicked!";
+            btn.Text = "Downloading...";
+
+            using (var client = new WebClient()) //How to grant the program permission to download files?
+            {
+                client.DownloadFile("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/chow-chow-portrait-royalty-free-image-1652926953.jpg?crop=0.44455xw:1xh", "C:\\");
+            }
         }
 
         private void listBoxUpload_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -78,7 +84,7 @@ namespace CSIA
 
 
 
-//*****************  CONVERTING PROCESS  **********************
+//**************************  CONVERTING PROCESS  ********************************
 
         private void buttonConvert_ClickAsync(object sender, EventArgs e)
         {
@@ -102,18 +108,18 @@ namespace CSIA
             //Set directory path
             openDialog.InitialDirectory = dbasepath;
 
-            //Set the File Filter of OpenFileDialog                         THIS NEEDS TO FILTER FOR FOLDERS/IMAGES 
+            //Set the File Filter of OpenFileDialog                         
             openDialog.Filter = "All Files (*.*)|*.*";
             openDialog.Multiselect = true;
 
             //Get the OK press of the Dialog Box
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
-                //Get Selected File(s)                                      this works for one: selectedfile = openDialog.FileName;
+                //Get Selected File(s)                                      
                 foreach (String file in openDialog.FileNames)
                 {
                     selectedfile = openDialog.FileName;
-                    listBoxUpload_SelectedIndexChanged_1.Items.Add(selectedfile);
+                    listBox1.Items.Add(selectedfile.Substring(selectedfile.LastIndexOf('\\') + 1));
                 }
             }
         }
@@ -131,14 +137,35 @@ namespace CSIA
 
         private void uploadClear_Click(object sender, EventArgs e)
         {
-            //Clears the files 
+            //Clears files queued to be uploaded
+            listBox1.Items.Clear();
         }
 
         private void downloadClear_Click(object sender, EventArgs e)
         {
-
+            //Clears files that are ready to be downloaded
+            listBox1.Items.Clear();
         }
 
-        
+        //****************************** ERROR MESSAGE ***********************************
+
+        //This needs to be able to be called
+
+        private void BtnOpenSecondForm_Click()    
+        {
+            //Create a thread to RUN a NEW application with the desired form
+            Thread t = new Thread(new ThreadStart(ThreadFormTwo));
+            t.Start();
+        }
+
+        private void ThreadFormTwo()
+        {
+            //shows error message 
+            Application.Run(new frmErrorMessage());
+
+            /*Once the code encounters error,
+            create display reasons for each
+            error upon creating second form*/
+        }
     }
 }
