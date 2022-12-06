@@ -50,7 +50,7 @@ namespace CSIA
 
             using (var client = new WebClient()) //How to grant the program permission to download files?
             {
-                client.DownloadFile("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/chow-chow-portrait-royalty-free-image-1652926953.jpg?crop=0.44455xw:1xh", "C:\\");
+                client.DownloadFile("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/chow-chow-portrait-royalty-free-image-1652926953.jpg?crop=0.44455xw:1xh", "C:\\Users\\Default\\Downloads");
             }
         }
 
@@ -85,13 +85,13 @@ namespace CSIA
         private void uploadClear_Click(object sender, EventArgs e)
         {
             //Clears files queued to be uploaded
-            listBox1.Items.Clear();
+            listBoxInput.Items.Clear();
         }
 
         private void downloadClear_Click(object sender, EventArgs e)
         {
             //Clears files that are ready to be downloaded
-            listBox1.Items.Clear();
+            listBoxOutput.Items.Clear();
         }
 
 
@@ -106,9 +106,8 @@ namespace CSIA
             var result = this.PerformConvertAPIAsync();
 
             //nothing to convert?
-            if (listBox1.Items.Count == 0)
+            if (listBoxInput.Items.Count == 0)
             {
-                //Errormsg.set("01");                   Need to figure out how to transfer error message to 2nd form - make a class maybe?
                 this.BtnOpenSecondForm_Click();
             }
 
@@ -139,7 +138,7 @@ namespace CSIA
                 //Get Selected File(s)                                      
                 foreach (String file in openDialog.FileNames)
                 {
-                    listBox1.Items.Add(file.Substring(file.LastIndexOf('\\') + 1));
+                    listBoxInput.Items.Add(file.Substring(file.LastIndexOf('\\') + 1));
                 }
             }
         }
@@ -176,6 +175,28 @@ namespace CSIA
             /*Once the code encounters error,
             create display reasons for each
             error upon creating second form*/
+        }
+
+        
+
+        private void textBoxDownloadDirectory_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelDownloadingTo_Click_2(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelUploadingFrom_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxUploadDirectory_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
