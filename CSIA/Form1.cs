@@ -18,6 +18,7 @@ namespace CSIA
     {
         string selectedfile = string.Empty;
 
+
         public Form1()
         {
             InitializeComponent();
@@ -102,8 +103,7 @@ namespace CSIA
         private void buttonConvert_ClickAsync(object sender, EventArgs e)
         {
             //HERE: REACH INTO FILES THAT HAVE BEEN CONVERTED 
-
-            var result = this.PerformConvertAPIAsync();
+            //var result = this.PerformConvertAPIAsync();
 
             //nothing to convert?
             if (listBoxInput.Items.Count == 0)
@@ -111,10 +111,7 @@ namespace CSIA
                 this.BtnOpenSecondForm_Click();
             }
 
-            //converting text
-
-            Button btn = sender as Button;
-            btn.Text = "Converting...";
+            _ = this.PerformConvertAPIAsync(@"C:\Users\s312467\Downloads\s.heic");
         }
 
         private void OpenFileDialogWindow()
@@ -124,7 +121,7 @@ namespace CSIA
             OpenFileDialog openDialog = new OpenFileDialog();
 
             //Set Title of OpenFileDialog
-            openDialog.Title = "Select A Text File";
+            openDialog.Title = "Select File(s)";
             //Set directory path
             openDialog.InitialDirectory = dbasepath;
 
@@ -147,11 +144,21 @@ namespace CSIA
             
         }
 
-        private async Task PerformConvertAPIAsync()
+        private async Task PerformConvertAPIAsync(String f)
         {
-            var convertApi = new ConvertApi("DkZglWGd1z8IKnJb");
-            var convert = await convertApi.ConvertAsync("heic", "jpg", new ConvertApiFileParam("File", @"INSERT FILES THAT NEED TO BE CONVERTED HERE"));
-            await convert.SaveFilesAsync(@"C:\Users\Default\Downloads");
+            try
+            {
+                var convertApi = new ConvertApi("DkZglWGd1z8IKnJb");
+                var convert = await convertApi.ConvertAsync("heic", "jpg", new ConvertApiFileParam("File", @f));       
+                await convert.SaveFilesAsync(@"C:\Users\Default\Downloads");                                        //ERROR: the program never gets past this line
+
+                Console.WriteLine("it didn't work");
+            }
+            catch (ConvertApiException e)
+            {
+                Console.WriteLine("Status Code: " + e.StatusCode);
+                Console.WriteLine("Response: " + e.Response);
+            }
         }
 
 
