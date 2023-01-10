@@ -91,8 +91,7 @@ namespace CSIA
             //HERE: REACH INTO FILES THAT HAVE BEEN CONVERTED 
             //var result = this.PerformConvertAPIAsync();
 
-            //Test Case
-            //_ = this.PerformConvertAPIAsync(@"C:\Users\s312467\Downloads\s.heic");
+            
 
             //nothing to convert?
             if (listBoxInput.Items.Count == 0)
