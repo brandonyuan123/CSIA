@@ -104,7 +104,7 @@ namespace CSIA
         {
             //HERE: REACH INTO FILES THAT HAVE BEEN CONVERTED 
             //var result = this.PerformConvertAPIAsync();
-
+            
             //nothing to convert?
             if (listBoxInput.Items.Count == 0)
             {
@@ -152,7 +152,7 @@ namespace CSIA
                 var convert = await convertApi.ConvertAsync("heic", "jpg", new ConvertApiFileParam("File", @f));       
                 await convert.SaveFilesAsync(@"C:\Users\Default\Downloads");                                        //ERROR: the program never gets past this line
 
-                Console.WriteLine("it didn't work");
+                Console.WriteLine("working");
             }
             catch (ConvertApiException e)
             {
