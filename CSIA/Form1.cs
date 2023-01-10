@@ -60,11 +60,6 @@ namespace CSIA
             
         }
 
-        private void listBoxDownload_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void labelTitle_Click(object sender, EventArgs e)
         {
 
@@ -72,7 +67,7 @@ namespace CSIA
 
         private void buttonUpload_Click(object sender, EventArgs e)
         {
-            this.OpenFileDialogWindow();
+            this.OpenFileDialogWindow(); 
 
             //DONT NEED THIS FOR NOW
             //this.ImportData();
@@ -89,29 +84,26 @@ namespace CSIA
             listBoxInput.Items.Clear();
         }
 
-        private void downloadClear_Click(object sender, EventArgs e)
-        {
-            //Clears files that are ready to be downloaded
-            listBoxOutput.Items.Clear();
-        }
-
-
-
-
         //**************************  CONVERTING PROCESS  ********************************
 
         private void buttonConvert_ClickAsync(object sender, EventArgs e)
         {
             //HERE: REACH INTO FILES THAT HAVE BEEN CONVERTED 
             //var result = this.PerformConvertAPIAsync();
-            
+
+            //Test Case
+            //_ = this.PerformConvertAPIAsync(@"C:\Users\s312467\Downloads\s.heic");
+
             //nothing to convert?
             if (listBoxInput.Items.Count == 0)
             {
                 this.BtnOpenSecondForm_Click();
             }
 
-            _ = this.PerformConvertAPIAsync(@"C:\Users\s312467\Downloads\s.heic");
+            foreach (string x in listBoxInput.Items)
+            {
+                _ = this.PerformConvertAPIAsync(x.Substring(x.IndexOf("        ---->        ") + 21));
+            }
         }
 
         private void OpenFileDialogWindow()
@@ -135,24 +127,22 @@ namespace CSIA
                 //Get Selected File(s)                                      
                 foreach (String file in openDialog.FileNames)
                 {
-                    listBoxInput.Items.Add(file.Substring(file.LastIndexOf('\\') + 1));
+                    listBoxInput.Items.Add(file.Substring(file.LastIndexOf('\\') + 1) + "        ---->        " + file);
                 }
             }
         }
-        private void ImportData()
-        {
-            
-        }
-
+        
         private async Task PerformConvertAPIAsync(String f)
         {
             try
             {
                 var convertApi = new ConvertApi("DkZglWGd1z8IKnJb");
-                var convert = await convertApi.ConvertAsync("heic", "jpg", new ConvertApiFileParam("File", @f));       
-                await convert.SaveFilesAsync(@"C:\Users\Default\Downloads");                                        //ERROR: the program never gets past this line
+                var convert = await convertApi.ConvertAsync("heic", "jpg", new ConvertApiFileParam("File", @f));
+                await convert.SaveFilesAsync(textBox1.Text);                                 
 
+                //TESTING IN CONSOLE
                 Console.WriteLine("working");
+                Console.WriteLine(textBox1.Text);
             }
             catch (ConvertApiException e)
             {
@@ -203,7 +193,7 @@ namespace CSIA
 
         private void textBoxUploadDirectory_TextChanged(object sender, EventArgs e)
         {
-
+            
         }
     }
 }
