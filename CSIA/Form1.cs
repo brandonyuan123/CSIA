@@ -5,6 +5,7 @@ using NuGet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
@@ -133,20 +134,40 @@ namespace CSIA
         
         private async Task PerformConvertAPIAsync(String f)
         {
-            try
+            if (f.Substring(f.LastIndexOf('.')).Equals(".heic"))
             {
-                var convertApi = new ConvertApi("DkZglWGd1z8IKnJb");
-                var convert = await convertApi.ConvertAsync("heic", "jpg", new ConvertApiFileParam("File", @f));
-                await convert.SaveFilesAsync(textBox1.Text);                                 
+                Console.WriteLine("File is HEIC type");
 
-                //TESTING IN CONSOLE
-                Console.WriteLine("working");
-                Console.WriteLine(textBox1.Text);
+                try
+                {
+                    var convertApi = new ConvertApi("DkZglWGd1z8IKnJb");
+                    var convert = await convertApi.ConvertAsync("heic", "jpg", new ConvertApiFileParam("File", @f));
+                    await convert.SaveFilesAsync(textBox1.Text);
+
+                    //TESTING IN CONSOLE
+                    Console.WriteLine("File converted");
+                    Console.WriteLine(textBox1.Text);
+                }
+                catch (ConvertApiException e)
+                {
+                    Console.WriteLine("Status Code: " + e.StatusCode);
+                    Console.WriteLine("Response: " + e.Response);
+                }
             }
-            catch (ConvertApiException e)
+            else
             {
-                Console.WriteLine("Status Code: " + e.StatusCode);
-                Console.WriteLine("Response: " + e.Response);
+                Console.WriteLine("File is not HEIC type");
+
+                try
+                {
+                    File.Move(@f, textBox1.Text);
+                }
+                catch (IOException iox)
+                {
+                    Console.WriteLine(iox.Message);
+                }
+
+                Console.WriteLine("Non-HEIC file moved");
             }
         }
 
