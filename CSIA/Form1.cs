@@ -1,24 +1,19 @@
 ﻿using ConvertApiDotNet;
 using ConvertApiDotNet.Exceptions;
 using CSIA.Models;
-using NuGet;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.UI;
 using System.Windows.Forms;
 
 namespace CSIA
 {
     public partial class Form1 : Form
     {
-        string selectedfile = string.Empty;
-
+        /*************************************** FORM CREATION ***************************************/
 
         public Form1()
         {
@@ -31,29 +26,21 @@ namespace CSIA
             this.SetControls();
         }
 
+        private void textBoxDownloadDirectory_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelDownloadingTo_Click_2(object sender, EventArgs e)
+        {
+
+        }
         private void SetControls()
         {
             //Form
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void buttonDownload_Click(object sender, EventArgs e)
-        {
-            // displays something when the button is clicked
-            Button btn = sender as Button;
-            btn.Text = "Downloading...";
-
-            using (var client = new WebClient()) //How to grant the program permission to download files?
-            {
-                client.DownloadFile("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/chow-chow-portrait-royalty-free-image-1652926953.jpg?crop=0.44455xw:1xh", "C:\\Users\\Default\\Downloads");
-            }
         }
 
         private void listBoxUpload_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -69,9 +56,6 @@ namespace CSIA
         private void buttonUpload_Click(object sender, EventArgs e)
         {
             this.OpenFileDialogWindow(); 
-
-            //DONT NEED THIS FOR NOW
-            //this.ImportData();
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
@@ -85,7 +69,11 @@ namespace CSIA
             listBoxInput.Items.Clear();
         }
 
-        //**************************  CONVERTING PROCESS  ********************************
+        /**********************************************************************************************/
+
+
+
+        /**********************************  CONVERTING PROCESS  ***************************************/
 
         private void buttonConvert_ClickAsync(object sender, EventArgs e)
         {
@@ -160,7 +148,7 @@ namespace CSIA
 
                 try
                 {
-                    File.Move(@f, textBox1.Text);
+                    File.Move(@f, textBox1.Text + "\\NEW" + f.Substring(f.LastIndexOf('\\') + 1));
                 }
                 catch (IOException iox)
                 {
@@ -171,8 +159,11 @@ namespace CSIA
             }
         }
 
+        /**********************************  CONVERTING PROCESS  ***************************************/
 
-        //****************************** ERROR MESSAGE ***********************************
+
+
+        /*************************************** ERROR MESSAGE *****************************************/
 
         //This needs to be able to be called
 
@@ -194,26 +185,6 @@ namespace CSIA
             error upon creating second form*/
         }
 
-        
-
-        private void textBoxDownloadDirectory_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelDownloadingTo_Click_2(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelUploadingFrom_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBoxUploadDirectory_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
+        /**********************************************************************************************/
     }
 }
