@@ -8,6 +8,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace CSIA
 {
@@ -85,7 +86,11 @@ namespace CSIA
             //nothing to convert?
             if (listBoxInput.Items.Count == 0)
             {
-                this.BtnOpenSecondForm_Click();
+                showErrorMsg();
+            }
+            else
+            {
+                errorMessage.Hide();
             }
 
             foreach (string x in listBoxInput.Items)
@@ -159,31 +164,25 @@ namespace CSIA
             }
         }
 
-        /**********************************  CONVERTING PROCESS  ***************************************/
+
+
+        /***********************************************************************************************/
 
 
 
         /*************************************** ERROR MESSAGE *****************************************/
 
-        //This needs to be able to be called
 
-        private void BtnOpenSecondForm_Click()    
+        private void errMsg_Click(object sender, EventArgs e)
         {
-
-            //Create a thread to RUN a NEW application with the desired form
-            Thread t = new Thread(new ThreadStart(ThreadFormTwo));
-            t.Start();
+            
         }
 
-        private void ThreadFormTwo()
+        private void showErrorMsg()
         {
-            //shows error message 
-            Application.Run(new frmErrorMessage());
-
-            /*Once the code encounters error,
-            create display reasons for each
-            error upon creating second form*/
+            errorMessage.Text = "No files selected";
         }
+
 
         /**********************************************************************************************/
     }

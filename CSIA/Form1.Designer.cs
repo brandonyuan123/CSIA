@@ -40,6 +40,7 @@ namespace CSIA
             this.button4 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.errorMessage = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -141,12 +142,24 @@ namespace CSIA
             this.label4.Text = "Downloading to:";
             this.label4.Click += new System.EventHandler(this.labelDownloadingTo_Click_2);
             // 
+            // errorMessage
+            // 
+            this.errorMessage.AutoSize = true;
+            this.errorMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.errorMessage.ForeColor = System.Drawing.Color.Red;
+            this.errorMessage.Location = new System.Drawing.Point(539, 375);
+            this.errorMessage.Name = "errorMessage";
+            this.errorMessage.Size = new System.Drawing.Size(0, 18);
+            this.errorMessage.TabIndex = 13;
+            this.errorMessage.Click += new System.EventHandler(this.errMsg_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gainsboro;
             this.ClientSize = new System.Drawing.Size(681, 438);
+            this.Controls.Add(this.errorMessage);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button4);
@@ -179,6 +192,7 @@ namespace CSIA
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label errorMessage;
     }
 }
 
