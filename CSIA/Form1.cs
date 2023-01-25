@@ -66,7 +66,7 @@ namespace CSIA
 
         private void uploadClear_Click(object sender, EventArgs e)
         {
-            //Clears files queued to be uploaded
+            //Clears files queued to be uploaded:
             listBoxInput.Items.Clear();
         }
 
@@ -78,21 +78,19 @@ namespace CSIA
 
         private void buttonConvert_ClickAsync(object sender, EventArgs e)
         {
-            //HERE: REACH INTO FILES THAT HAVE BEEN CONVERTED 
-            //var result = this.PerformConvertAPIAsync();
-
             
-
-            //nothing to convert?
+            //Nothing to convert?
             if (listBoxInput.Items.Count == 0)
             {
                 showErrorMsg();
             }
+            //Re-hide message upon successful conversion:
             else
             {
                 errorMessage.Hide();
             }
 
+            //Convert each item in listbox:
             foreach (string x in listBoxInput.Items)
             {
                 _ = this.PerformConvertAPIAsync(x.Substring(x.IndexOf("        ---->        ") + 21));
@@ -102,22 +100,22 @@ namespace CSIA
         private void OpenFileDialogWindow()
         {
             string dbasepath = CurrentPath.GetDbasePath();
-
             OpenFileDialog openDialog = new OpenFileDialog();
 
-            //Set Title of OpenFileDialog
+            //Set Title of OpenFileDialog:
             openDialog.Title = "Select File(s)";
-            //Set directory path
+
+            //Set directory path:
             openDialog.InitialDirectory = dbasepath;
 
-            //Set the File Filter of OpenFileDialog                         
+            //Set the File Filter of OpenFileDialog:                         
             openDialog.Filter = "All Files (*.*)|*.*";
             openDialog.Multiselect = true;
 
-            //Get the OK press of the Dialog Box
+            //Get the OK press of the Dialog Box:
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
-                //Get Selected File(s)                                      
+                //Get selected file names + file directory locations:                                      
                 foreach (String file in openDialog.FileNames)
                 {
                     listBoxInput.Items.Add(file.Substring(file.LastIndexOf('\\') + 1) + "        ---->        " + file);
@@ -127,26 +125,29 @@ namespace CSIA
         
         private async Task PerformConvertAPIAsync(String f)
         {
+            //Determine if file is HEIC type:
             if (f.Substring(f.LastIndexOf('.')).Equals(".heic"))
             {
                 Console.WriteLine("File is HEIC type");
-
+                
+                //ConvertAPI process:
                 try
                 {
                     var convertApi = new ConvertApi("DkZglWGd1z8IKnJb");
                     var convert = await convertApi.ConvertAsync("heic", "jpg", new ConvertApiFileParam("File", @f));
                     await convert.SaveFilesAsync(textBox1.Text);
 
-                    //TESTING IN CONSOLE
-                    Console.WriteLine("File converted");
-                    Console.WriteLine(textBox1.Text);
+                    //Documenting conversion of file in console:
+                    Console.WriteLine("File converted, " + textBox1.Text);
                 }
+                //Error codes:
                 catch (ConvertApiException e)
                 {
                     Console.WriteLine("Status Code: " + e.StatusCode);
                     Console.WriteLine("Response: " + e.Response);
                 }
             }
+            //If file is not HEIC, move existing file to new location instead:
             else
             {
                 Console.WriteLine("File is not HEIC type");
@@ -180,6 +181,7 @@ namespace CSIA
 
         private void showErrorMsg()
         {
+            //Makes invisible error message appear:
             errorMessage.Text = "No files selected";
         }
 
